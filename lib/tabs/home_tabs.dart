@@ -37,12 +37,6 @@ class HomeTabs extends StatefulWidget {
 
 class _HomeTabsState extends State<HomeTabs>
     with AutomaticKeepAliveClientMixin {
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]);
-  }
-
   final List<String> _urls = [
     'https://yoestoyaqui.cl/aplicacion-movil',
     'https://yoestoyaqui.cl/categorias',
@@ -87,33 +81,35 @@ class _HomeTabsState extends State<HomeTabs>
     print('<----- build init ----->');
 
     return Scaffold(
-      body: WillPopScope(
-        onWillPop: () => _onWillPop(context),
-        child: WebView(
-          initialUrl: _urls[widget.currentTabIndex],
-          navigationDelegate: (NavigationRequest request) {
-            if (request.url.contains("tel:")) {
-              _launchURL(request.url);
-              return NavigationDecision.prevent;
-            } else if (request.url.contains("whatsapp:")) {
-              _launchURL(request.url);
-              return NavigationDecision.prevent;
-            } else if (request.url.contains("mailto:")) {
-              _launchURL(request.url);
-              return NavigationDecision.prevent;
-            } else if (request.url.contains("instagram.com")) {
-              _launchInBrowser(request.url);
-              return NavigationDecision.prevent;
-            } else if (request.url.contains("facebook.com")) {
-              _launchInBrowser(request.url);
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webController) {
-            _webController = webController;
-          },
+      body: SafeArea(
+        child: WillPopScope(
+          onWillPop: () => _onWillPop(context),
+          child: WebView(
+            initialUrl: _urls[widget.currentTabIndex],
+            navigationDelegate: (NavigationRequest request) {
+              if (request.url.contains("tel:")) {
+                _launchURL(request.url);
+                return NavigationDecision.prevent;
+              } else if (request.url.contains("whatsapp:")) {
+                _launchURL(request.url);
+                return NavigationDecision.prevent;
+              } else if (request.url.contains("mailto:")) {
+                _launchURL(request.url);
+                return NavigationDecision.prevent;
+              } else if (request.url.contains("instagram.com")) {
+                _launchInBrowser(request.url);
+                return NavigationDecision.prevent;
+              } else if (request.url.contains("facebook.com")) {
+                _launchInBrowser(request.url);
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webController) {
+              _webController = webController;
+            },
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
