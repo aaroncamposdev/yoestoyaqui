@@ -33,6 +33,7 @@ dependencies:
   url_launcher: ^5.7.10
   onesignal_flutter: ^2.6.1
   connectivity: ^2.0.2
+  flutter_statusbar_manager: ^2.0.0
 
 
 dev_dependencies:

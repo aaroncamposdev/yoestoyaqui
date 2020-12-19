@@ -8,6 +8,9 @@ void main() {
 class SplashNuevo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.pink[900], //or set color with: Color(0xFF0000FF)
+        systemNavigationBarColor: Colors.pink[900]));
     return Scaffold(
       body: InkWell(
         child: Container(
