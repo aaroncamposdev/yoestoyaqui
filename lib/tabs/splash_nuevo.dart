@@ -13,7 +13,7 @@ class SplashNuevo extends StatelessWidget {
           'lib/images/inicio-app.jpg',
           fit: BoxFit.fill,
         ),
-        color: Colors.pink[900],
+        color: const Color(0xff490730),
         padding: const EdgeInsets.all(0.0),
         alignment: Alignment.center,
       ),
