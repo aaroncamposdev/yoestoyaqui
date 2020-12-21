@@ -2,10 +2,10 @@ import 'dart:async';
 // import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:testapp/tabs/splash_nuevo.dart';
+import 'package:yoestoyaqui_app/tabs/splash_nuevo.dart';
 import 'package:your_splash/your_splash.dart';
-import 'package:testapp/tabs/home_tabs.dart';
-//import 'package:testapp/tabs/nuevo_home.dart';
+import 'package:yoestoyaqui_app/tabs/home_tabs.dart';
+//import 'package:yoestoyaqui_app/tabs/nuevo_home.dart';
 
 Future<void> main() async {
   runApp(MyApp());

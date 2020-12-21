@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
-  SystemChrome.setEnabledSystemUIOverlays([]);
-}
-
 class SplashNuevo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,8 +11,9 @@ class SplashNuevo extends StatelessWidget {
       body: new Container(
         child: new Image.asset(
           'lib/images/inicio-app.jpg',
-          fit: BoxFit.fitHeight,
+          fit: BoxFit.fill,
         ),
+        color: Colors.pink[900],
         padding: const EdgeInsets.all(0.0),
         alignment: Alignment.center,
       ),
