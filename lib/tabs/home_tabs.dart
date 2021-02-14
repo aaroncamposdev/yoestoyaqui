@@ -1,14 +1,24 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-_launchURL(url) async {
+Future<void> _launchURL(String url) async {
   if (await canLaunch(url)) {
-    await launch(url,
-        forceWebView: false, enableJavaScript: true, enableDomStorage: true);
+    final bool nativeAppLaunchSucceeded = await launch(
+      url,
+      forceSafariVC: false,
+      universalLinksOnly: true,
+    );
+    if (!nativeAppLaunchSucceeded) {
+      await launch(
+        url,
+        forceSafariVC: true,
+      );
+    }
   } else {
     throw 'No se pudo abrir el link $url';
   }
@@ -16,12 +26,7 @@ _launchURL(url) async {
 
 Future<void> _launchInBrowser(String url) async {
   if (await canLaunch(url)) {
-    await launch(
-      url,
-      forceSafariVC: false,
-      forceWebView: false,
-      headers: <String, String>{'header_key': 'header_value'},
-    );
+    await launch(url);
   } else {
     throw 'No se pudo abrir el link $url';
   }
@@ -37,6 +42,13 @@ class HomeTabs extends StatefulWidget {
 
 class _HomeTabsState extends State<HomeTabs>
     with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    super.initState();
+    // Enable hybrid composition.
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
   final List<String> _urls = [
     'https://yoestoyaqui.cl/aplicacion-movil',
     'https://yoestoyaqui.cl/categorias',
@@ -56,19 +68,24 @@ class _HomeTabsState extends State<HomeTabs>
           builder: (context) => AlertDialog(
                 title: Text('¿Deseas salir de la aplicación?'),
                 actions: <Widget>[
-                  FlatButton(
-                    color: Colors.pink[900],
+                  ElevatedButton(
+                    style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: Colors.pink[900] // foreground
+                        ),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                     child: Text('No'),
                   ),
-                  FlatButton(
-                    textColor: Colors.pink[900],
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.pink[900], // background
+                    ),
                     onPressed: () {
                       SystemNavigator.pop();
                     },
-                    child: Text('Si'),
+                    child: Text('Si, deseo salir'),
                   ),
                 ],
               ));
@@ -94,13 +111,13 @@ class _HomeTabsState extends State<HomeTabs>
                 _launchURL(request.url);
                 return NavigationDecision.prevent;
               } else if (request.url.contains("mailto:")) {
-                _launchURL(request.url);
+                _launchInBrowser(request.url);
                 return NavigationDecision.prevent;
               } else if (request.url.contains("instagram.com")) {
-                _launchInBrowser(request.url);
+                _launchURL(request.url);
                 return NavigationDecision.prevent;
               } else if (request.url.contains("facebook.com")) {
-                _launchInBrowser(request.url);
+                _launchURL(request.url);
                 return NavigationDecision.prevent;
               }
               return NavigationDecision.navigate;
